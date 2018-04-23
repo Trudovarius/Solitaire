@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xkucer91" default="compile" basedir=".">
+
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="lib" location="lib"/>
+    <property name="dest-client" location="dest-client"/>
+    <property name="doc" location="doc"/>
+
+    <path id="junit.class.path">
+        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="${lib}/hamcrest-core-1.3.jar"/>
+        <pathelement location="${build}" />
+    </path>
+
+    <target name="clean">
+        <delete dir="${dest-client}" />
+        <delete dir="${build}" />
+    </target>
+
+    <target name="makedir">
+        <mkdir dir="${dest-client}" />
+        <mkdir dir="${build}" />
+    </target>
+
+    <target name="compile" depends="clean, makedir">
+        <javac srcdir="${src}" destdir="${build}" classpath="${lib}/junit-4.12.jar:${lib}/hamcrest-core-1.3.jar:${src}">
+        </javac>
+        <javadoc encoding="UTF-8" charset="UTF-8" docencoding="UTF-8" sourcepath="src/ija" destdir="doc">
+			<fileset dir="src/ija">
+				<include name="**" />
+			</fileset>
+		</javadoc>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build}/Solitaire.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="ija.ija2016.Solitaire"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">    	
+        <java jar="${build}/Solitaire.jar" fork="true"></java>
+    </target>
+</project>
